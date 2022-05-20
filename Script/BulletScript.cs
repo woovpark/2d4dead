@@ -35,6 +35,12 @@ public class BulletScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.tag == "Wall")
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         if (collision.tag != "Enemy") return;
         
         var zombieData = collision.gameObject.GetComponent<ZombieDataScript>();

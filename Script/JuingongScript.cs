@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class JuingongScript : MonoBehaviour
 {
-    //public GameObject BulletPrefab;
     public Slider UIHPBar;
 
     public SpriteRenderer WeaponImage;
@@ -16,7 +15,6 @@ public class JuingongScript : MonoBehaviour
     private AudioSource mAudio;
     private TriggerScript mTrigger;
 
-    //private int mWeaponIndex = 0;
     public int WeaponIndex { get; set; }
 
     private void Awake()
@@ -65,4 +63,6 @@ public class JuingongScript : MonoBehaviour
     {
         mTrigger.ButtonUp();
     }
+
+    
 }

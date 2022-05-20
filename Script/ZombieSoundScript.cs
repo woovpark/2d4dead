@@ -12,11 +12,6 @@ public class ZombieSoundScript : MonoBehaviour
         mAudio = GetComponent<AudioSource>();
         mData = GetComponent<ZombieDataScript>();
     }
-
-    private void Start()
-    {
-        mAudio.PlayOneShot(mData.AppearSound);
-    }
     
     public void HitSound()
     {

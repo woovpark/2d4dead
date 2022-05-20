@@ -8,7 +8,6 @@ public class ZombieDataScript : MonoBehaviour
     public float Power = 5;
 
     [Space]
-    public AudioClip AppearSound;
     public AudioClip DieSound;
     public AudioClip HitSound;
 

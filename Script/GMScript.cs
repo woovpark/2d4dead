@@ -41,7 +41,16 @@ public class GMScript : MonoBehaviour
         //StartCoroutine(GameLoop());
         mAudio.PlayOneShot(GDataScript.instance.GameStartClip);
 
-        Instantiate(BGTile, BGRoot);
+        LoadMap(BGTile);
+    }
+
+    void LoadMap(GameObject pMapPrefab)
+    {
+        var aMap = Instantiate(pMapPrefab, BGRoot);
+        var aColl = aMap.GetComponent<Collider2D>();
+        var aConfiner = GameCM.GetComponent<CinemachineConfiner2D>();
+        aConfiner.InvalidateCache();
+        aConfiner.m_BoundingShape2D = aColl;
     }
 
     public void StartGame()
