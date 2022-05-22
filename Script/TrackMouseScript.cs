@@ -5,18 +5,18 @@ using UnityEngine;
 public class TrackMouseScript : MonoBehaviour
 {
     public SpriteRenderer CharImage;
-    private GMScript gGM;
     public GameObject ImageObj;
+
+    private JuingongControlScript mControl;
 
     private void Awake()
     {
-        gGM = GDataScript.instance.GetGM();
+        mControl = GetComponent<JuingongControlScript>();
     }
 
     private void Update()
     {
-        //CharImage.flipX = (gGM.AimVector.x > 0);
-        if (gGM.AimVector.x > 0)
+        if (mControl.AimVector.x > 0)
         {
             ImageObj.transform.localScale = new Vector3(-1, 1, 1);
         }

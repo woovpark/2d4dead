@@ -4,6 +4,7 @@ using UnityEngine;
 
 // 2디4 데드
 
+// Unity Input System asset 적용 OK
 // 1 주인공을 움직인다 OK
 // 2 좀비를 동적으로 생성시킨다 (게임루프 필요) OK
 // 3 주인공과 좀비의 draw order 정리한다 OK
@@ -47,8 +48,6 @@ using UnityEngine;
 // 7.4.5 권총(무한 총알의 경우)먼저 구현 OK / 소총(총알 제한의 경우) 순서로 개발
 // 7.4.6 리로딩 비주얼 실제로 구현
 
-// ?? Unity Input System asset 적용
-
 // 8 좀비의 리스폰 패턴을 개선한다
 // 8.1 좀비가 카메라 밖에서 생성되어 다가 오도록 한다
 // 8.2 맵의 충돌영역에 갖히지 않도록 한다
@@ -65,7 +64,6 @@ using UnityEngine;
 // 10.3 체력회복 아이템 - 습득시 즉시 회복 OK
 // 
 // 20 좀비 리스폰 시스템 고민 ->맵디자인과 연계하여 고려
-
 
 
 public class GDataScript : MonoBehaviour

@@ -14,11 +14,14 @@ public class TriggerScript : MonoBehaviour
     private GMScript gGM;
     private JuingongDataScript mData;
     private JuingongScript mJuingong;
+    private JuingongControlScript mControl;
+
 
     private void Awake()
     {
         mJuingong = GetComponent<JuingongScript>();
         mData = GetComponent<JuingongDataScript>();
+        mControl = GetComponent<JuingongControlScript>();
         gGM = GDataScript.instance.GetGM();
     }
 
@@ -34,7 +37,7 @@ public class TriggerScript : MonoBehaviour
 
     public void FireOnce()
     {
-        var bulletVel = gGM.AimVector.normalized;
+        var bulletVel = mControl.AimVector.normalized;
         var aBullet = Instantiate(BulletPrefab);
         aBullet.transform.position = mData.GetCurrentWeaponMuzzlePoint().position;
         aBullet.GetComponent<BulletScript>().SetVelocity(bulletVel);
