@@ -13,14 +13,14 @@ public class JuingongScript : MonoBehaviour
     private JuingongDataScript mData;
     private Rigidbody2D mBody;
     private AudioSource mAudio;
-    private TriggerScript mTrigger;
+    private TriggerV2Script mTrigger;
 
     public int WeaponIndex { get; set; }
 
     private void Awake()
     {
         mData = GetComponent<JuingongDataScript>();
-        mTrigger = GetComponent<TriggerScript>();
+        mTrigger = GetComponent<TriggerV2Script>();
         mBody = GetComponent<Rigidbody2D>();
         mAudio = GetComponent<AudioSource>();
         UIHPBar.value = UIHPBar.maxValue;
