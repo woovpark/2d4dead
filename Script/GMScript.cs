@@ -59,13 +59,28 @@ public class GMScript : MonoBehaviour
 
         var aJuingong = Instantiate(JuingongPrefab);
         mJuingong = aJuingong.GetComponent<JuingongScript>();
+        {
+            var weapons = mJuingong.GetData().Weapons;
+            foreach (var eachWeap in weapons)
+            {
+                eachWeap.OnMagCapChanged += SetMagCapUI;
+            }
+        }
         GameCM.Follow = aJuingong.transform;
         StartCoroutine(GameLoop());
         IsInGame = true;
+        SetMagCapUI();
     }
 
     public void DoGameOver()
     {
+        {
+            var weapons = mJuingong.GetData().Weapons;
+            foreach (var eachWeap in weapons)
+            {
+                eachWeap.OnMagCapChanged -= SetMagCapUI;
+            }
+        }
         mAudio.PlayOneShot(GDataScript.instance.GameOverClip);
         IsInGame = false;
         StopAllCoroutines();
@@ -103,5 +118,13 @@ public class GMScript : MonoBehaviour
     public void PlayGlobalSound(AudioClip pClip)
     {
         mAudio.PlayOneShot(pClip);
+    }
+
+    public void SetMagCapUI()
+    {
+        var curWeapon = mJuingong.GetData().Weapons[mJuingong.WeaponIndex];
+        var aInvenCap = curWeapon.GameInvenCap.ToString();
+        if (curWeapon.InventoryCap == -1) aInvenCap = "00";
+        GameUI.BulletCount.text = curWeapon.GameMagCap.ToString() + "/" + curWeapon.MagazineCap.ToString() + "/" + aInvenCap;
     }
 }

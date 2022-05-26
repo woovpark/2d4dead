@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +13,13 @@ public class WeaponInfo
     public int InventoryCap;
     public float ReloadTime;
 
-    public int GameMagCap { get; set; }
+    public event Action OnMagCapChanged;
+    private int mGMC = 0;
+    public int GameMagCap { get { return mGMC; } set { mGMC = value; OnMagCapChanged?.Invoke(); } }
+
+    public event Action OnInvenCapChanged;
+    private int mGIC = 0;
+    public int GameInvenCap { get { return mGIC; } set { mGIC = value; OnInvenCapChanged?.Invoke(); } }
 }
 
 public class JuingongDataScript : MonoBehaviour

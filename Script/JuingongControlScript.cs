@@ -44,10 +44,12 @@ public class JuingongControlScript : MonoBehaviour
     void OnChangePistol()
     {
         mJuingong.ChangeWeapon(0);
+        gGM.SetMagCapUI();
     }
     void OnChangeRifle()
     {
         mJuingong.ChangeWeapon(1);
+        gGM.SetMagCapUI();
     }
 
     private void Update()

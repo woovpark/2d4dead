@@ -7,6 +7,7 @@ public class TriggerV2Script : MonoBehaviour
     public GameObject BulletPrefab;
 
     private bool mOKToFire = true;
+    public bool OKToFire { get { return mOKToFire; } set { mOKToFire = value; } }
     private bool mIsPressed = false;
 
     private GMScript gGM;
@@ -30,6 +31,7 @@ public class TriggerV2Script : MonoBehaviour
         foreach (var eachWeap in mData.Weapons)
         {
             eachWeap.GameMagCap = eachWeap.MagazineCap;
+            eachWeap.GameInvenCap = eachWeap.InventoryCap;
         }
     }
 
@@ -68,6 +70,12 @@ public class TriggerV2Script : MonoBehaviour
         // reload check
         if (mData.Weapons[mJuingong.WeaponIndex].GameMagCap <= 0)
         {
+            // ¼ÒÁö ÃÑ¾Ë °¹¼ö°¡ ´Ù ¶³¾îÁø °æ¿ì
+            if (aCurWeap.GameInvenCap == 0)
+            {
+                yield break;
+            }
+
             float aTime = aCurWeap.ReloadTime;
             while (aTime > 0)
             {
@@ -78,7 +86,18 @@ public class TriggerV2Script : MonoBehaviour
                 yield return null;
             }
             mUI.SetReloadGauge(100);
-            aCurWeap.GameMagCap = aCurWeap.MagazineCap;
+
+            int availableCount = aCurWeap.MagazineCap;
+            if (aCurWeap.InventoryCap != -1)
+            {
+                if (aCurWeap.MagazineCap > aCurWeap.GameInvenCap)
+                {
+                    availableCount = aCurWeap.GameInvenCap;
+                }
+                aCurWeap.GameInvenCap -= availableCount;
+            }
+            aCurWeap.GameMagCap = availableCount;
+            
         }
         mOKToFire = true;
 

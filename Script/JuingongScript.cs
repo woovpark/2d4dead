@@ -32,6 +32,8 @@ public class JuingongScript : MonoBehaviour
 
     }
 
+    public JuingongDataScript GetData() { return mData; }
+
     public void SetSpeed(Vector2 pSpeed)
     {
         mBody.velocity = pSpeed;
@@ -51,8 +53,14 @@ public class JuingongScript : MonoBehaviour
     public void ChangeWeapon(int pIndex)
     {
         WeaponIndex = pIndex;
+        var curWeapon = mData.Weapons[WeaponIndex];
+        WeaponImage.sprite = curWeapon.WeaponImage;
 
-        WeaponImage.sprite = mData.Weapons[WeaponIndex].WeaponImage;
+        mTrigger.OKToFire = (curWeapon.GameMagCap > 0);
+        if ((curWeapon.GameMagCap <= 0) && (curWeapon.GameInvenCap != 0))
+        {
+            //TODO: reload
+        }
     }
 
     public void ButtonDown()

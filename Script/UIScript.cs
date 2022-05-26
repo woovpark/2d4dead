@@ -9,6 +9,7 @@ public class UIScript : MonoBehaviour
     public GameObject GameOverUI;
 
     public Slider ReloadGauge;
+    public Text BulletCount;
 
     private GMScript gGM;
 
