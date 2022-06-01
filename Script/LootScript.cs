@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum LootTypeEnum { EXP, Bullet, HPItem, Gun }
+public enum LootTypeEnum { EXP, Bullet, HPItem }
 
 public class LootScript : MonoBehaviour
 {
@@ -35,6 +35,7 @@ public class LootScript : MonoBehaviour
 
         var playerData = collision.gameObject.GetComponent<JuingongDataScript>();
         gGM.PlayGlobalSound(DropGetClip);
+        bool isOKToDestroy = true;
         switch (LootType)
         {
             case LootTypeEnum.EXP:
@@ -43,16 +44,17 @@ public class LootScript : MonoBehaviour
                 }
                 break;
             case LootTypeEnum.Bullet:
+                {
+                    isOKToDestroy = playerData.AddBullet(LootValue);
+                }
                 break;
             case LootTypeEnum.HPItem:
                 {
                     playerData.Heal(LootValue);
                 }
                 break;
-            case LootTypeEnum.Gun:
-                break;
         }
-        Destroy(gameObject);
+        if (isOKToDestroy) Destroy(gameObject);
     }
 
     public void SetupLootItem(LootTypeEnum pType)
@@ -60,7 +62,6 @@ public class LootScript : MonoBehaviour
         LootType = pType;
 
         LootImages[(int)LootType].SetActive(true);
-
         
         switch (LootType)
         {
@@ -68,11 +69,10 @@ public class LootScript : MonoBehaviour
                 LootValue = gGD.ZombieInitialEXP;
                 break;
             case LootTypeEnum.Bullet:
+                LootValue = 5;
                 break;
             case LootTypeEnum.HPItem:
                 LootValue = 10;
-                break;
-            case LootTypeEnum.Gun:
                 break;
         }
     }

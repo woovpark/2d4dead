@@ -7,6 +7,9 @@ public class ZombieScript : MonoBehaviour
 {
     public GameObject LootPrefab;
     public Slider UIHPBar;
+    public float EXPRateMax = 70f;
+    public float BulletRateMax = 95f;
+
     private Rigidbody2D mBody;
     private ZombieDataScript mData;
     private ZombieSoundScript mSound;
@@ -51,23 +54,19 @@ public class ZombieScript : MonoBehaviour
 
         var aRandom = Random.Range(0f, 100f);
         var aType = LootTypeEnum.EXP;
-        /*
-        if ((0 < aRandom)&& (aRandom < 50))
+        
+        if ((0 < aRandom)&& (aRandom < EXPRateMax))
         {
 
         }
-        else if ((50 < aRandom) && (aRandom < 80))
+        else if ((EXPRateMax < aRandom) && (aRandom < BulletRateMax))
         {
             aType = LootTypeEnum.Bullet;
         }
-        else if ((80 < aRandom) && (aRandom < 95))
+        else if (BulletRateMax < aRandom)
         {
             aType = LootTypeEnum.HPItem;
         }
-        else if (95 < aRandom)
-        {
-            aType = LootTypeEnum.Gun;
-        }*/
 
         aLoot.GetComponent<LootScript>().SetupLootItem(aType);
     }

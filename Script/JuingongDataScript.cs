@@ -29,7 +29,6 @@ public class JuingongDataScript : MonoBehaviour
 
     public float HP = 10;
     public float AtkInitial = 2.5f;
-    //public float Def = 1;
 
     public WeaponInfo[] Weapons;
 
@@ -86,6 +85,17 @@ public class JuingongDataScript : MonoBehaviour
         }
 
         Debug.Log("Lv " + Lv + "CurEXP " + CurEXP + "EXPToUP " + aEXPToUp);
+    }
+
+    public bool AddBullet(float pAmount)
+    {
+        if (Weapons[1].GameInvenCap == Weapons[1].InventoryCap) return false;
+        
+        Weapons[1].GameInvenCap += (int)pAmount;
+        if (Weapons[1].GameInvenCap > Weapons[1].InventoryCap)
+            Weapons[1].GameInvenCap = Weapons[1].InventoryCap;
+        mParentScript.CheckReload();
+        return true;
     }
 
     public Transform GetCurrentWeaponMuzzlePoint()

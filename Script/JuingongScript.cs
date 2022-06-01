@@ -56,11 +56,7 @@ public class JuingongScript : MonoBehaviour
         var curWeapon = mData.Weapons[WeaponIndex];
         WeaponImage.sprite = curWeapon.WeaponImage;
 
-        mTrigger.OKToFire = (curWeapon.GameMagCap > 0);
-        if ((curWeapon.GameMagCap <= 0) && (curWeapon.GameInvenCap != 0))
-        {
-            //TODO: reload
-        }
+        mTrigger.OnChangeWeapon();
     }
 
     public void ButtonDown()
@@ -72,5 +68,17 @@ public class JuingongScript : MonoBehaviour
         mTrigger.ButtonUp();
     }
 
-    
+    public void Reload()
+    {
+        mTrigger.ManualReload();
+    }
+
+    public void CheckReload()
+    {
+        if ((mData.Weapons[1].GameMagCap == 0) && // 탄창의 용량이 0
+            (mData.Weapons[1].GameInvenCap > 0)) // 가방에 총알이 있으면
+            Reload();
+    }
+
+
 }

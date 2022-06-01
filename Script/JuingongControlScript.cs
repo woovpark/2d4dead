@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,7 +13,7 @@ public class JuingongControlScript : MonoBehaviour
     [HideInInspector]
     public Vector2 AimVector = Vector2.zero;
 
-    Vector3 mouseRawVector; // ¹é¾÷ÁÂÇ¥
+    Vector3 mouseRawVector; // ë°±ì—…ì¢Œí‘œ
 
     private void Awake()
     {
@@ -50,6 +50,12 @@ public class JuingongControlScript : MonoBehaviour
     {
         mJuingong.ChangeWeapon(1);
         gGM.SetMagCapUI();
+    }
+
+    void OnReload()
+    {
+        print("reload ====");
+        mJuingong.Reload();
     }
 
     private void Update()
