@@ -44,12 +44,16 @@ public class TriggerV2Script : MonoBehaviour
 
     public void FireOnce()
     {
+        var aCurWeap = mData.Weapons[mJuingong.WeaponIndex];
         var bulletVel = mControl.AimVector.normalized;
         var aBullet = Instantiate(BulletPrefab);
         aBullet.transform.position = mData.GetCurrentWeaponMuzzlePoint().position;
         aBullet.GetComponent<BulletScript>().SetVelocity(bulletVel);
+        var totPow = aCurWeap.Power * GDataScript.instance.GetJuingongAtk(mData.Lv);
+        aBullet.GetComponent<BulletDataScript>().SetPower(totPow);
+        print("bullet power " + totPow);
 
-        mData.Weapons[mJuingong.WeaponIndex].GameMagCap--;
+        aCurWeap.GameMagCap--;
     }
 
     public void ButtonDown()

@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
@@ -7,22 +7,26 @@ public class GMScript : MonoBehaviour
 {
     public CinemachineVirtualCamera GameCM;
     public UIScript GameUI;
-    public GameObject ZombiePrefab;
     public GameObject JuingongPrefab;
 
     public Transform BGRoot;
     public GameObject BGTile;
 
-    public int ZombieCount = 10;
-
     public bool IsInGame { set; get; }
 
+    private ZombieManScript gZombie;
     private JuingongScript mJuingong;
     private Camera mGameCamera;
     public Camera GetGameCamera() { return mGameCamera; }
     private AudioSource mAudio;
+    private GameObject mCurrentMap;
 
     Vector3 mouseRawVector;
+
+    void CheckGZombie()
+    {
+        if (!gZombie) gZombie = GetComponent<ZombieManScript>();
+    }
 
     private void Awake()
     {
@@ -34,28 +38,62 @@ public class GMScript : MonoBehaviour
     {
         GameUI.StartGameUI.SetActive(true);
         GameUI.GameOverUI.SetActive(false);
-        //StartCoroutine(GameLoop());
+
         mAudio.PlayOneShot(GDataScript.instance.GameStartClip);
 
-        LoadMap(BGTile);
+        // 첫 맵 : 레벨1 휴게소 //FIXME: BGTile
+        LoadMap(BGTile, PortalTypeEnum.Next, false);
     }
 
-    void LoadMap(GameObject pMapPrefab)
+    public void LoadMap(GameObject pMapPrefab, PortalTypeEnum pFrom, bool isBattleField)
     {
-        var aMap = Instantiate(pMapPrefab, BGRoot);
-        var aColl = aMap.GetComponent<Collider2D>();
+        CheckGZombie();
+
+        Destroy(mCurrentMap);
+        gZombie.ClearAllZombies();
+        gZombie.StopZombieLoop();
+
+        mCurrentMap = Instantiate(pMapPrefab, BGRoot);
+        var aColl = mCurrentMap.GetComponent<Collider2D>();
         var aConfiner = GameCM.GetComponent<CinemachineConfiner2D>();
         aConfiner.InvalidateCache();
         aConfiner.m_BoundingShape2D = aColl;
+
+        if (isBattleField)
+        {
+            gZombie.RunZombieLoop();
+        }
+
+        if (mJuingong)
+        {
+            var portals = mCurrentMap.GetComponentsInChildren<PortalScript>();
+            //print("portal count " + portals.Length);
+            foreach (var eachPortal in portals)
+            {
+                if (pFrom == PortalTypeEnum.Next)
+                {
+                    if (eachPortal.PortalType == PortalTypeEnum.Prev)
+                    {
+                        mJuingong.transform.position = eachPortal.StartPoint.position;
+                        break;
+                    }
+                }
+                else if (pFrom == PortalTypeEnum.Prev)
+                {
+                    if (eachPortal.PortalType == PortalTypeEnum.Next)
+                    {
+                        mJuingong.transform.position = eachPortal.StartPoint.position;
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     public void StartGame()
     {
-        var zombies = FindObjectsOfType<ZombieScript>();
-        foreach (var eachZombie in zombies)
-        {
-            Destroy(eachZombie.gameObject);
-        }
+        CheckGZombie();
+        gZombie.ClearAllZombies();
 
         var aJuingong = Instantiate(JuingongPrefab);
         mJuingong = aJuingong.GetComponent<JuingongScript>();
@@ -69,9 +107,10 @@ public class GMScript : MonoBehaviour
 
         }
         GameCM.Follow = aJuingong.transform;
-        StartCoroutine(GameLoop());
         IsInGame = true;
         SetMagCapUI();
+
+        // 첫 맵이 휴게소일 경우 좀비 루프 돌리면 안된다
     }
 
     public void DoGameOver()
@@ -100,22 +139,6 @@ public class GMScript : MonoBehaviour
         if (mJuingong == null) return Vector3.zero;
 
         return mJuingong.gameObject.transform.position;
-    }
-
-    IEnumerator GameLoop()
-    {
-        while (true)
-        {
-            var zombies = FindObjectsOfType<ZombieScript>();
-            if (zombies.Length < ZombieCount)
-            {
-                var aZombie = Instantiate(ZombiePrefab);
-                var aX = Random.Range(-10f, 10f);
-                var aY = Random.Range(-10f, 10f);
-                aZombie.transform.position = new Vector3(aX, aY, 0);
-            }
-            yield return new WaitForSeconds(1f);
-        }
     }
 
     public void PlayGlobalSound(AudioClip pClip)

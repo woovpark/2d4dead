@@ -4,22 +4,31 @@ using UnityEngine;
 
 public class ZombieDataScript : MonoBehaviour
 {
-    public float HP = 10;
-    public float Power = 5;
+    [HideInInspector]
+    public float Power;
 
     [Space]
     public AudioClip DieSound;
     public AudioClip HitSound;
 
+    private MapManScript gMap;
+
+    private float mOrgHP;
     private float mHP;
     private ZombieScript mZScript;
     private ImageBlinkScript mBlink;
 
     private void Awake()
     {
+        var gGD = GDataScript.instance;
+        gMap = gGD.GetMap();
         mZScript = GetComponent<ZombieScript>();
         mBlink = GetComponentInChildren<ImageBlinkScript>();
-        mHP = HP;
+
+        mOrgHP = gGD.GetZombieHP(gMap.MapLv);
+        Power = gGD.GetZombieAtk(gMap.MapLv);
+        print("z hp " + mOrgHP + " pow " + Power);
+        mHP = mOrgHP;
     }
 
     public void GetHit(float pDamage)
@@ -34,7 +43,7 @@ public class ZombieDataScript : MonoBehaviour
             Destroy(gameObject);
         }
 
-        var aPercent = mHP / HP * 100f;
+        var aPercent = mHP / mOrgHP * 100f;
         mZScript.SetHPBar(aPercent);
     }
 

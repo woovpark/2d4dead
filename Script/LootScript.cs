@@ -1,4 +1,4 @@
-using System.Collections;
+Ôªøusing System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,6 +15,7 @@ public class LootScript : MonoBehaviour
     private GDataScript gGD;
     private GMScript gGM;
     private Collider2D mCollider;
+    private bool mEnabled = true;
 
     private void Awake()
     {
@@ -30,8 +31,10 @@ public class LootScript : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag != "Player") return;
+        if (!mEnabled) return;
+        mEnabled = false;
 
-        //Debug.Log("æ∆¿Ã≈€ Ω¿µÊ! " + LootType);
+        //Debug.Log("ÏïÑÏù¥ÌÖú ÏäµÎìù! " + LootType);
 
         var playerData = collision.gameObject.GetComponent<JuingongDataScript>();
         gGM.PlayGlobalSound(DropGetClip);
@@ -55,6 +58,7 @@ public class LootScript : MonoBehaviour
                 break;
         }
         if (isOKToDestroy) Destroy(gameObject);
+        else mEnabled = true;
     }
 
     public void SetupLootItem(LootTypeEnum pType)
@@ -66,13 +70,13 @@ public class LootScript : MonoBehaviour
         switch (LootType)
         {
             case LootTypeEnum.EXP:
-                LootValue = gGD.ZombieInitialEXP;
+                LootValue = gGD.ZombieEXP;
                 break;
             case LootTypeEnum.Bullet:
-                LootValue = 5;
+                LootValue = gGD.LootBulletCount;
                 break;
             case LootTypeEnum.HPItem:
-                LootValue = 10;
+                LootValue = gGD.LootHPBoxHeal;
                 break;
         }
     }

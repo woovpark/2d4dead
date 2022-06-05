@@ -28,50 +28,54 @@ using UnityEngine;
 // 6.3 좀비의 체력이 0이 되면 사라진다 OK
 // 6.4 좀비에게 체력 게이지를 달아준다 OK
 // 6.5 좀비가 맞았을 때 깜박이게 만든다 OK
-// 7 주인공 성장 시스템 만들기
+// 7 주인공 성장 시스템 만들기 OK
 // 7.1 체력시스템 OK
 // 7.1.5 체력회복 아이템을 먹어서 회복함 OK
 // 7.1.6 사망 구현 (GameOver) OK
 // 7.1.6.5 게임의 시작(Start Game)과 끝(Game Over)을 구현 OK
-// 7.2 경험치 및 레벨 / 공격력 방어력 - 반만 오케이
-// 7.2.1 레벨에 맞춘 경험치 공식 OK, 드랍경험치 공식, HP, 공격력, 방어력 공식 (주인공과 좀비 따로) 작성
-// 7.2.2 대미지 공식 작성 (총 종류, 플레이어 공격력, 좀비의 방어력) 총알 자체 파워는 제거 - 총을 중심으로 고려하는 걸로 수정
+// 7.2 경험치 및 레벨 / 공격력 OK
+// 7.2.1 레벨에 맞춘 경험치 공식 OK, 드랍경험치 공식, HP, 공격력 공식 (주인공과 좀비 따로) 작성 OK
+// 7.2.2 대미지 공식 작성 (총 종류, 플레이어 공격력, 좀비의 HP) OK
 // 7.2.5 경험치 아이템을 먹어서 성장함 OK
 // 7.2.9 총 종류 바꿀 수 있도록 작업 - OK
 // 7.3 총알이 소모되도록 하고 총알 아이템을 먹어서 보충하도록 한다 OK
-// 7.4 리로드를 구현한다
-// 7.4.1 리로딩 비주얼 실제로 구현
 
-// 8 좀비의 리스폰 패턴을 개선한다
+// ?.4 리로드를 구현한다
+// ?.4.1 리로딩 비주얼 실제로 구현
+
+// 8 좀비의 리스폰 패턴을 개선한다 - 글로벌 좀비 관리 스크립트 생성
 // 8.1 좀비가 카메라 밖에서 생성되어 다가 오도록 한다
 // 8.2 맵의 충돌영역에 갖히지 않도록 한다
 
 // 9 맵 기본 메카닉 제작
-// 9.1 출구는 바리케이드에 막혀있음
+// 9.1 입/출구는 바리케이드에 막혀있음
 // 9.2 맵에 들어 왔을때 타이머가 작동하여 5분후에 바리케이드가 폭발하여 출구가 노출된다.
+// 9.3 휴게소 맵 다수, 전투맵 다수 만들어서 게임 플레이 할 때 마다 랜덤하게 맵을 로드한다 - 맵관리자가 프리팹을 관리하도록
+// 9.4 휴 - 전 - 휴 - 전 의 패턴을 구현 OK / 마지막 스테이지를 결정(전10에서 탈출? 휴11에서 탈출?)
+// 9.5 휴게소 맵에 아이템을 골고루 뿌려 놓는다
 
 // 10 아이템 루팅 시스템 OK
-// 10.0.1 루팅 아이템 프리팹 만들기 - 경험치 아이템, 소총 총알 아이템(총기? 총알? 고민), 체력회복 아이템 OK
+// 10.0.1 루팅 아이템 프리팹 만들기 - 경험치 아이템, 소총 총알 아이템(총기), 체력회복 아이템 OK
 
 // 10.1 다양한 총기 - 권총과 소총
 // 10.2 소총 탄환 수집 / 소지 갯수 제한 / 탄창(리로드) 구현 OK
 // 10.3 체력회복 아이템 - 습득시 즉시 회복 OK
-// 
-// 20 좀비 리스폰 시스템 고민 ->맵디자인과 연계하여 고려
+
 
 
 public class GDataScript : MonoBehaviour
 {
     static public GDataScript instance;
 
-    public float ZombieInitialEXP = 3f;
-    public float PistolPower = 2.5f;
-    public int PistolRPS = 3;
+    public float ZombieEXP = 3f;
+    public int LootBulletCount = 5;
+    public float LootHPBoxHeal = 10;
     [Space]
     public AudioClip GameStartClip;
     public AudioClip GameOverClip;
 
     private GMScript mGM;
+    private MapManScript mMap;
 
     private void Awake()
     {
@@ -96,8 +100,39 @@ public class GDataScript : MonoBehaviour
         return mGM;
     }
 
+    public MapManScript GetMap()
+    {
+        if (mMap == null)
+        {
+            mMap = GetComponent<MapManScript>();
+        }
+        return mMap;
+    }
+
     public float GetEXPToUp(int pLv)
     {
         return pLv * pLv * 150f;
     }
+
+    public float GetZombieAtk(int pLv)
+    {
+        return (pLv + 1) * 5f;
+    }
+
+    public float GetZombieHP(int pLv)
+    {
+        return pLv * 50f;
+    }
+
+    public float GetJuingongAtk(int pLv)
+    {
+        return 3f * (pLv - 1) * (pLv - 1) + 2f;
+    }
+    
+    public float GetJuingongHP(int pLv)
+    {
+        return pLv * 50f;
+    }
+
+
 }

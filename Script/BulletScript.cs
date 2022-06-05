@@ -10,6 +10,7 @@ public class BulletScript : MonoBehaviour
 
     private BulletDataScript mData;
     private AudioSource mAudio;
+    private bool mEnabled = true;
 
     private void Awake()
     {
@@ -42,7 +43,9 @@ public class BulletScript : MonoBehaviour
         }
 
         if (collision.tag != "Enemy") return;
-        
+        if (!mEnabled) return;
+        mEnabled = false;
+
         var zombieData = collision.gameObject.GetComponent<ZombieDataScript>();
         zombieData.GetHit(mData.Power);
         Destroy(gameObject);

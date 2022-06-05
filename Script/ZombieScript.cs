@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -84,6 +84,7 @@ public class ZombieScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //FIXME: 대미지가 계속 플레이어에게 주어지도록 수정 / enabler 고려 작업
         if (collision.tag != "Player") return;
 
         var playerData = collision.gameObject.GetComponent<JuingongDataScript>();
