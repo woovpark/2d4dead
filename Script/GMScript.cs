@@ -54,10 +54,14 @@ public class GMScript : MonoBehaviour
         gZombie.StopZombieLoop();
 
         mCurrentMap = Instantiate(pMapPrefab, BGRoot);
-        var aColl = mCurrentMap.GetComponent<Collider2D>();
+        var aMapData = mCurrentMap.GetComponent<MapDataScript>();
+        // cinemachine setup
         var aConfiner = GameCM.GetComponent<CinemachineConfiner2D>();
         aConfiner.InvalidateCache();
-        aConfiner.m_BoundingShape2D = aColl;
+        aConfiner.m_BoundingShape2D = aMapData.CameraZone;
+        // zombie spawnpoint setup
+        gZombie.SetSpawnPointArray(aMapData.ZombieSpawnPoints);
+
 
         if (isBattleField)
         {
@@ -153,4 +157,10 @@ public class GMScript : MonoBehaviour
         if (curWeapon.InventoryCap == -1) aInvenCap = "--";
         GameUI.BulletCount.text = curWeapon.GameMagCap.ToString() + "/" + curWeapon.MagazineCap.ToString() + "/" + aInvenCap;
     }
+
+    /*
+    public void DevSetRot(float pFloat)
+    {
+        mJuingong.SetWeaponRotation(pFloat);
+    }*/
 }

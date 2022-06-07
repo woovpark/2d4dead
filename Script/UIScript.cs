@@ -8,7 +8,6 @@ public class UIScript : MonoBehaviour
     public GameObject StartGameUI;
     public GameObject GameOverUI;
 
-    public Slider ReloadGauge;
     public Text BulletCount;
 
     private GMScript gGM;
@@ -16,7 +15,6 @@ public class UIScript : MonoBehaviour
     private void Awake()
     {
         gGM = GDataScript.instance.GetGM();
-        ReloadGauge.value = 100;
     }
     public void CallbackStartGame()
     {
@@ -30,8 +28,14 @@ public class UIScript : MonoBehaviour
         gGM.StartGame();
     }
 
-    public void SetReloadGauge(float pPercent)
+    public void CallbackOnCheatToggle(bool pIsOn)
     {
-        ReloadGauge.value = pPercent;
+        GDataScript.instance.Cheat = pIsOn;
     }
+
+    /*
+    public void DevSetRot(float pFloat)
+    {
+        gGM.DevSetRot(pFloat);
+    }*/
 }

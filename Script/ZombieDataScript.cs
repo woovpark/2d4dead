@@ -27,7 +27,7 @@ public class ZombieDataScript : MonoBehaviour
 
         mOrgHP = gGD.GetZombieHP(gMap.MapLv);
         Power = gGD.GetZombieAtk(gMap.MapLv);
-        print("z hp " + mOrgHP + " pow " + Power);
+        //print("z hp " + mOrgHP + " pow " + Power);
         mHP = mOrgHP;
     }
 

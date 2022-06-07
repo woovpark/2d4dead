@@ -15,7 +15,7 @@ public class TriggerV2Script : MonoBehaviour
     private JuingongDataScript mData;
     private JuingongScript mJuingong;
     private JuingongControlScript mControl;
-    private UIScript mUI;
+    //private UIScript mUI;
 
     private void Awake()
     {
@@ -23,7 +23,7 @@ public class TriggerV2Script : MonoBehaviour
         mData = GetComponent<JuingongDataScript>();
         mControl = GetComponent<JuingongControlScript>();
         gGM = GDataScript.instance.GetGM();
-        mUI = FindObjectOfType<UIScript>();
+        //mUI = FindObjectOfType<UIScript>();
     }
 
     private void Start()
@@ -51,9 +51,11 @@ public class TriggerV2Script : MonoBehaviour
         aBullet.GetComponent<BulletScript>().SetVelocity(bulletVel);
         var totPow = aCurWeap.Power * GDataScript.instance.GetJuingongAtk(mData.Lv);
         aBullet.GetComponent<BulletDataScript>().SetPower(totPow);
-        print("bullet power " + totPow);
+        //print("bullet power " + totPow);
 
-        aCurWeap.GameMagCap--;
+        // TODO: delme cheat
+        if (!GDataScript.instance.Cheat)
+            aCurWeap.GameMagCap--;
     }
 
     public void ButtonDown()
@@ -92,12 +94,12 @@ public class TriggerV2Script : MonoBehaviour
             while (aTime > 0)
             {
                 aTime -= Time.deltaTime;
-                float aPercent = aTime / aCurWeap.ReloadTime * 100f;
-                mUI.SetReloadGauge(aPercent);
+                float aZrot = aTime / aCurWeap.ReloadTime * 360f * 2;
+                mJuingong.SetWeaponRotation(aZrot);
 
                 yield return null;
             }
-            mUI.SetReloadGauge(100);
+            mJuingong.SetWeaponRotation(0);
 
             FillMagazine();
             mIsInReloading = false;
@@ -111,7 +113,7 @@ public class TriggerV2Script : MonoBehaviour
     public void OnChangeWeapon()
     {
         StopAllCoroutines();
-        mUI.SetReloadGauge(100);
+        mJuingong.SetWeaponRotation(0);
 
         var curWeapon = mData.Weapons[mJuingong.WeaponIndex];
         mOKToFire = (curWeapon.GameMagCap > 0);
@@ -147,12 +149,12 @@ public class TriggerV2Script : MonoBehaviour
         while (aTime > 0)
         {
             aTime -= Time.deltaTime;
-            float aPercent = aTime / aCurWeap.ReloadTime * 100f;
-            mUI.SetReloadGauge(aPercent);
+            float aZrot = aTime / aCurWeap.ReloadTime * 360f * 2;
+            mJuingong.SetWeaponRotation(aZrot);
 
             yield return null;
         }
-        mUI.SetReloadGauge(100);
+        mJuingong.SetWeaponRotation(0);
 
         FillMagazine();
 

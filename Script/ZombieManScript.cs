@@ -7,6 +7,13 @@ public class ZombieManScript : MonoBehaviour
     public GameObject ZombiePrefab;
     public int ZombieCount = 10;
 
+    private Transform[] mCurrentMapSpawnPoints;
+
+    public void SetSpawnPointArray(Transform[] pArray)
+    {
+        mCurrentMapSpawnPoints = pArray;
+    }
+
     public void ClearAllZombies()
     {
         var zombies = FindObjectsOfType<ZombieScript>();
@@ -34,9 +41,8 @@ public class ZombieManScript : MonoBehaviour
             if (zombies.Length < ZombieCount)
             {
                 var aZombie = Instantiate(ZombiePrefab);
-                var aX = Random.Range(-10f, 10f);
-                var aY = Random.Range(-10f, 10f);
-                aZombie.transform.position = new Vector3(aX, aY, 0);
+                var spawnIndx = Random.Range(0, mCurrentMapSpawnPoints.Length);
+                aZombie.transform.position = mCurrentMapSpawnPoints[spawnIndx].position;
             }
             yield return new WaitForSeconds(1f);
         }

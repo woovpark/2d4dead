@@ -80,5 +80,8 @@ public class JuingongScript : MonoBehaviour
             Reload();
     }
 
-
+    public void SetWeaponRotation(float pDegree)
+    {
+        WeaponImage.gameObject.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, pDegree));
+    }
 }
