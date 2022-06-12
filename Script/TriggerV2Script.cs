@@ -94,7 +94,7 @@ public class TriggerV2Script : MonoBehaviour
             while (aTime > 0)
             {
                 aTime -= Time.deltaTime;
-                float aZrot = aTime / aCurWeap.ReloadTime * 360f * 2;
+                float aZrot = aTime / aCurWeap.ReloadTime * 360f * 5;
                 mJuingong.SetWeaponRotation(aZrot);
 
                 yield return null;
@@ -149,7 +149,7 @@ public class TriggerV2Script : MonoBehaviour
         while (aTime > 0)
         {
             aTime -= Time.deltaTime;
-            float aZrot = aTime / aCurWeap.ReloadTime * 360f * 2;
+            float aZrot = aTime / aCurWeap.ReloadTime * 360f * 5;
             mJuingong.SetWeaponRotation(aZrot);
 
             yield return null;

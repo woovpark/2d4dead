@@ -8,9 +8,15 @@ public class GMScript : MonoBehaviour
     public CinemachineVirtualCamera GameCM;
     public UIScript GameUI;
     public GameObject JuingongPrefab;
+    public GameObject LootPrefab;
+    public int RestAreaLootCount = 2;
 
     public Transform BGRoot;
     public GameObject BGTile;
+
+    [Header("휴게소 맵용 드랍 확률")]
+    public float RestEXPRateMax = 30f;
+    public float RestBulletRateMax = 80f;
 
     public bool IsInGame { set; get; }
 
@@ -67,6 +73,10 @@ public class GMScript : MonoBehaviour
         {
             gZombie.RunZombieLoop();
         }
+        else
+        {
+            CreateMapLoot(aMapData);
+        }
 
         if (mJuingong)
         {
@@ -91,6 +101,18 @@ public class GMScript : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+
+    void CreateMapLoot(MapDataScript pMapData)
+    {
+        // 위치 중복 체크 필요
+        for (int k = 0; k < 2; k++)
+        {
+            var aLoot = Instantiate(LootPrefab);
+            var spawnIndx = Random.Range(0, pMapData.LootSpawnPoints.Length);
+            aLoot.transform.position = pMapData.LootSpawnPoints[spawnIndx].position;
+            aLoot.GetComponent<LootScript>().SetupLootItem(GDataScript.instance.GetRandomLootType(RestEXPRateMax, RestBulletRateMax));
         }
     }
 

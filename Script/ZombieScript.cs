@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ZombieScript : MonoBehaviour
 {
+    public float MoveSpeed = 1;
     public GameObject LootPrefab;
     public Slider UIHPBar;
     public float EXPRateMax = 70f;
@@ -36,7 +37,7 @@ public class ZombieScript : MonoBehaviour
         if (juing == null) return;
 
         var jPos = juing.gameObject.transform.position;
-        var chaseVec = (jPos - transform.position).normalized * 2f;
+        var chaseVec = (jPos - transform.position).normalized * MoveSpeed;
         //Debug.Log(chaseVec);
         SetSpeed((Vector2)chaseVec);
     }
@@ -51,24 +52,7 @@ public class ZombieScript : MonoBehaviour
     {
         var aLoot = Instantiate(LootPrefab);
         aLoot.transform.position = transform.position;
-
-        var aRandom = Random.Range(0f, 100f);
-        var aType = LootTypeEnum.EXP;
-        
-        if ((0 < aRandom)&& (aRandom < EXPRateMax))
-        {
-
-        }
-        else if ((EXPRateMax < aRandom) && (aRandom < BulletRateMax))
-        {
-            aType = LootTypeEnum.Bullet;
-        }
-        else if (BulletRateMax < aRandom)
-        {
-            aType = LootTypeEnum.HPItem;
-        }
-
-        aLoot.GetComponent<LootScript>().SetupLootItem(aType);
+        aLoot.GetComponent<LootScript>().SetupLootItem(GDataScript.instance.GetRandomLootType(EXPRateMax, BulletRateMax));
     }
 
     public void DoDie()

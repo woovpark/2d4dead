@@ -51,9 +51,9 @@ using UnityEngine;
 // 9 맵 기본 메카닉 제작
 // 9.1 입/출구는 바리케이드에 막혀있음
 // 9.2 맵에 들어 왔을때 타이머가 작동하여 5분후에 바리케이드가 폭발하여 출구가 노출된다.
-// 9.3 휴게소 맵 다수, 전투맵 다수 만들어서 게임 플레이 할 때 마다 랜덤하게 맵을 로드한다 - 맵관리자가 프리팹을 관리하도록
+// 9.3 휴게소/전투 공용 맵 다수 만들어서 게임 플레이 할 때 마다 랜덤하게 맵을 로드한다 - 맵관리자가 프리팹을 관리하도록
 // 9.4 휴 - 전 - 휴 - 전 의 패턴을 구현 OK / 마지막 스테이지를 결정(전10에서 탈출? 휴11에서 탈출?)
-// 9.5 공용 맵에 아이템 스폰 포인트를 여러개 만들어 골고루 뿌려 놓는다
+// 9.5 공용 맵에 아이템 스폰 포인트를 여러개 만들어 골고루 뿌려 놓는다 OK
 
 // 10 아이템 루팅 시스템 OK
 // 10.0.1 루팅 아이템 프리팹 만들기 - 경험치 아이템, 소총 총알 아이템(총기), 체력회복 아이템 OK
@@ -138,5 +138,26 @@ public class GDataScript : MonoBehaviour
         return pLv * 50f;
     }
 
+    //==========
 
+    public LootTypeEnum GetRandomLootType(float pEXPRate, float pBulletRate)
+    {
+        var aRandom = Random.Range(0f, 100f);
+        var retType = LootTypeEnum.EXP;
+
+        if ((0 < aRandom) && (aRandom < pEXPRate))
+        {
+
+        }
+        else if ((pEXPRate < aRandom) && (aRandom < pBulletRate))
+        {
+            retType = LootTypeEnum.Bullet;
+        }
+        else if (pBulletRate < aRandom)
+        {
+            retType = LootTypeEnum.HPItem;
+        }
+
+        return retType;
+    }
 }

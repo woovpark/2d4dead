@@ -54,4 +54,6 @@ public class MapManScript : MonoBehaviour
         //print("map lv " + MapLv + " / is battle field " + IsBattleField);
         gGM.LoadMap(BGTile, pType, IsBattleField);
     }
+
+
 }
