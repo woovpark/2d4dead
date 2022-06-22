@@ -7,8 +7,7 @@ public class UIScript : MonoBehaviour
 {
     public GameObject StartGameUI;
     public GameObject GameOverUI;
-
-    public Text BulletCount;
+    public Text MapTimer;
 
     private GMScript gGM;
 
@@ -33,9 +32,4 @@ public class UIScript : MonoBehaviour
         GDataScript.instance.Cheat = pIsOn;
     }
 
-    /*
-    public void DevSetRot(float pFloat)
-    {
-        gGM.DevSetRot(pFloat);
-    }*/
 }

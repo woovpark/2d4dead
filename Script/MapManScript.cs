@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MapManScript : MonoBehaviour
 {
+    public GameObject PortalBarricade;
+    public float MapTimeSec;
     public GameObject BGTile;
 
     public int MapLv { get; set; }

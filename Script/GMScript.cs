@@ -177,12 +177,7 @@ public class GMScript : MonoBehaviour
         var curWeapon = mJuingong.GetData().Weapons[mJuingong.WeaponIndex];
         var aInvenCap = curWeapon.GameInvenCap.ToString();
         if (curWeapon.InventoryCap == -1) aInvenCap = "--";
-        GameUI.BulletCount.text = curWeapon.GameMagCap.ToString() + "/" + curWeapon.MagazineCap.ToString() + "/" + aInvenCap;
+        mJuingong.BulletCount.text = curWeapon.GameMagCap.ToString() + "/" + curWeapon.MagazineCap.ToString() + "/" + aInvenCap;
     }
 
-    /*
-    public void DevSetRot(float pFloat)
-    {
-        mJuingong.SetWeaponRotation(pFloat);
-    }*/
 }

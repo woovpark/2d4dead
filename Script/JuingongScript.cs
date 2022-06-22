@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class JuingongScript : MonoBehaviour
 {
     public Slider UIHPBar;
+    public Text BulletCount;
 
     public SpriteRenderer WeaponImage;
 
