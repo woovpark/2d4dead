@@ -6,7 +6,8 @@ public class MapManScript : MonoBehaviour
 {
     public GameObject PortalBarricade;
     public float MapTimeSec;
-    public GameObject BGTile;
+    public GameObject[] RestAreas;
+    public GameObject[] Battlefields;
 
     public int MapLv { get; set; }
 
@@ -54,7 +55,20 @@ public class MapManScript : MonoBehaviour
 
         CheckGM();
         //print("map lv " + MapLv + " / is battle field " + IsBattleField);
-        gGM.LoadMap(BGTile, pType, IsBattleField);
+
+        var toLoadMap = RestAreas[0];
+        if (IsBattleField)
+        {
+            int aIndx = Random.Range(0, Battlefields.Length);
+            toLoadMap = Battlefields[aIndx];
+        }
+        else
+        {
+            int aIndx = Random.Range(0, RestAreas.Length);
+            toLoadMap = RestAreas[aIndx];
+        }
+
+        gGM.LoadMap(toLoadMap, pType, IsBattleField);
     }
 
 

@@ -5,10 +5,13 @@ using UnityEngine;
 public class ZombieManScript : MonoBehaviour
 {
     public GameObject ZombiePrefab;
-    public int ZombieCount = 10;
+
+    private int mZombieCount;
 
     private Transform[] mCurrentMapSpawnPoints;
 
+    public void SetZombieCount(int pCount) { mZombieCount = pCount; }
+    
     public void SetSpawnPointArray(Transform[] pArray)
     {
         mCurrentMapSpawnPoints = pArray;
@@ -38,7 +41,7 @@ public class ZombieManScript : MonoBehaviour
         while (true)
         {
             var zombies = FindObjectsOfType<ZombieScript>();
-            if (zombies.Length < ZombieCount)
+            if (zombies.Length < mZombieCount)
             {
                 var aZombie = Instantiate(ZombiePrefab);
                 var spawnIndx = Random.Range(0, mCurrentMapSpawnPoints.Length);

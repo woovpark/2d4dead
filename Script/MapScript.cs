@@ -13,18 +13,22 @@ public class MapScript : MonoBehaviour
         gGM = GDataScript.instance.GetGM();
         gMap = GDataScript.instance.GetMap();
 
-        var aPortals = GetComponentsInChildren<PortalScript>();
-        foreach (var eachPortal in aPortals)
+        if (gMap.IsBattleField)
         {
-            var aBarri = Instantiate(gMap.PortalBarricade);
-            aBarri.transform.position = eachPortal.transform.position;
-            mBarricades.Add(aBarri);
+            var aPortals = GetComponentsInChildren<PortalScript>();
+            foreach (var eachPortal in aPortals)
+            {
+                var aBarri = Instantiate(gMap.PortalBarricade);
+                aBarri.transform.position = eachPortal.transform.position;
+                mBarricades.Add(aBarri);
+            }
         }
     }
 
     private void Start()
     {
-        StartCoroutine(MapTimerRoutine());
+        if (gMap.IsBattleField) StartCoroutine(MapTimerRoutine());
+        else gGM.GameUI.MapTimer.gameObject.SetActive(false);
     }
 
     IEnumerator MapTimerRoutine()

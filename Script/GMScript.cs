@@ -12,7 +12,7 @@ public class GMScript : MonoBehaviour
     public int RestAreaLootCount = 2;
 
     public Transform BGRoot;
-    public GameObject BGTile;
+    public GameObject Lv1RestArea;
 
     [Header("휴게소 맵용 드랍 확률")]
     public float RestEXPRateMax = 30f;
@@ -48,7 +48,7 @@ public class GMScript : MonoBehaviour
         mAudio.PlayOneShot(GDataScript.instance.GameStartClip);
 
         // 첫 맵 : 레벨1 휴게소 //FIXME: BGTile
-        LoadMap(BGTile, PortalTypeEnum.Next, false);
+        LoadMap(Lv1RestArea, PortalTypeEnum.Next, false);
     }
 
     public void LoadMap(GameObject pMapPrefab, PortalTypeEnum pFrom, bool isBattleField)
@@ -67,16 +67,10 @@ public class GMScript : MonoBehaviour
         aConfiner.m_BoundingShape2D = aMapData.CameraZone;
         // zombie spawnpoint setup
         gZombie.SetSpawnPointArray(aMapData.ZombieSpawnPoints);
+        gZombie.SetZombieCount(aMapData.ZombieCount);
 
-
-        if (isBattleField)
-        {
-            gZombie.RunZombieLoop();
-        }
-        else
-        {
-            CreateMapLoot(aMapData);
-        }
+        gZombie.RunZombieLoop();
+        CreateMapLoot(aMapData);
 
         if (mJuingong)
         {
@@ -107,7 +101,7 @@ public class GMScript : MonoBehaviour
     void CreateMapLoot(MapDataScript pMapData)
     {
         // 위치 중복 체크 필요
-        for (int k = 0; k < 2; k++)
+        for (int k = 0; k < pMapData.LootDropCount; k++)
         {
             var aLoot = Instantiate(LootPrefab);
             var spawnIndx = Random.Range(0, pMapData.LootSpawnPoints.Length);
