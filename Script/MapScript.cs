@@ -48,6 +48,16 @@ public class MapScript : MonoBehaviour
         }
         gGM.GameUI.MapTimer.gameObject.SetActive(false);
 
+        {
+            var zombies = FindObjectsOfType<ZombieScript>();
+            foreach (var zombie in zombies)
+            {
+                Destroy(zombie.gameObject);
+            }
+        }
+
+        GDataScript.instance.GetComponent<ZombieManScript>().StopZombieLoop();
+
         foreach (var eachBari in mBarricades)
         {
             Destroy(eachBari);

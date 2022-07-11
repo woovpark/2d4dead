@@ -56,6 +56,13 @@ public class GMScript : MonoBehaviour
         CheckGZombie();
 
         Destroy(mCurrentMap);
+        {
+            var loots = FindObjectsOfType<LootScript>();
+            foreach (var eachLoot in loots)
+            {
+                Destroy(eachLoot.gameObject);
+            }
+        }
         gZombie.ClearAllZombies();
         gZombie.StopZombieLoop();
 
@@ -73,29 +80,7 @@ public class GMScript : MonoBehaviour
         CreateMapLoot(aMapData);
 
         if (mJuingong)
-        {
-            var portals = mCurrentMap.GetComponentsInChildren<PortalScript>();
-            //print("portal count " + portals.Length);
-            foreach (var eachPortal in portals)
-            {
-                if (pFrom == PortalTypeEnum.Next)
-                {
-                    if (eachPortal.PortalType == PortalTypeEnum.Prev)
-                    {
-                        mJuingong.transform.position = eachPortal.StartPoint.position;
-                        break;
-                    }
-                }
-                else if (pFrom == PortalTypeEnum.Prev)
-                {
-                    if (eachPortal.PortalType == PortalTypeEnum.Next)
-                    {
-                        mJuingong.transform.position = eachPortal.StartPoint.position;
-                        break;
-                    }
-                }
-            }
-        }
+            mJuingong.transform.position = aMapData.EnterPoint.position;
     }
 
     void CreateMapLoot(MapDataScript pMapData)
